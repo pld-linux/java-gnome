@@ -11,8 +11,6 @@ BuildRequires:	gtk+-devel >= 1.2.0
 BuildRequires:	jdk >= 1.1.7
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_prefix		/usr/X11R6
-%define		_mandir		%{_prefix}/man
 
 %description
 This is a very preliminary version of Java wrappers for GTK/GNOME and
