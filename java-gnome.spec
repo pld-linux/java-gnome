@@ -1,14 +1,10 @@
-%define ver	0.5.0
-%define rel	2
-
 Summary:	Java-Gnome is a preliminary version of Java wrappers for GTK/GNOME.
 Name:		java-gnome
-Version:	%{ver}
-Release:	%{rel}
+Version:	0.5.0
+Release:	2
 Requires:	gtk+ >= 1.2.0
 License:	GPL
-Group:		""
-######		Unknown group!
+Group:		Applications
 Source0:	%{name}-%{version}.tar.gz
 URL:		http://java-gnome.sourceforge.net/
 
