@@ -5,12 +5,11 @@ Version:	0.5.0
 Release:	2
 License:	GPL
 Group:		X11/Libraries
-Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/java-gnome/%{name}-%{version}.tar.gz
+Source0:	http://dl.sourceforge.net/java-gnome/%{name}-%{version}.tar.gz
 URL:		http://java-gnome.sourceforge.net/
 BuildRequires:	gtk+-devel >= 1.2.0
 BuildRequires:	jdk >= 1.1.7
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
 
 %description
 This is a very preliminary version of Java wrappers for GTK/GNOME and
