@@ -6,6 +6,7 @@ Release:	2
 License:	GPL
 Group:		X11/Libraries
 Source0:	http://dl.sourceforge.net/java-gnome/%{name}-%{version}.tar.gz
+# Source0-md5:	5f566b967152240c6ba26b2e238e339a
 URL:		http://java-gnome.sourceforge.net/
 BuildRequires:	gtk+-devel >= 1.2.0
 BuildRequires:	jdk >= 1.1.7
