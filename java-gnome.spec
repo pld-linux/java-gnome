@@ -33,14 +33,12 @@ powinna byæ traktowana jako ALPHA nawet je¿eli dzia³a.
 rm -rf $RPM_BUILD_ROOT
 %{__make} install
 
-gzip -9nf AUTHORS README NEWS TODO THANKS
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS.gz README.gz NEWS.gz TODO.gz THANKS.gz doc
+%doc AUTHORS README NEWS TODO THANKS doc
 %{_libdir}/libGTKJava.so.0.5.0
 %{_libdir}/libGTKJava.so
 %{_libdir}/libGNOMEJava.so.0.5.0
