@@ -3,13 +3,23 @@ Summary(pl):	Java-Gnome jest wczesn± wersj± systemu javowych wrapperów dla GTK/G
 Name:		java-gnome
 Version:	0.5.0
 Release:	2
-Requires:	gtk+ >= 1.2.0
 License:	GPL
-Group:		Applications
-Group(de):	Applikationen
-Group(pl):	Aplikacje
-Source0:	http://prdownloads.sourceforge.net/java-gnome/%{name}-%{version}.tar.gz
+Group:		X11/Libraries
+Group(de):	X11/Libraries
+Group(es):	X11/Bibliotecas
+Group(fr):	X11/Librairies
+Group(pl):	X11/Biblioteki
+Group(pt_BR):	X11/Bibliotecas
+Group(ru):	X11/âÉÂÌÉÏÔÅËÉ
+Group(uk):	X11/â¦ÂÌ¦ÏÔÅËÉ
+Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/java-gnome/%{name}-%{version}.tar.gz
 URL:		http://java-gnome.sourceforge.net/
+BuildRequires:	gtk+-devel >= 1.2.0
+BuildRequires:	jdk >= 1.1.7
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		_prefix		/usr/X11R6
+%define		_mandir		%{_prefix}/man
 
 %description
 This is a very preliminary version of Java wrappers for GTK/GNOME and
@@ -30,14 +40,16 @@ powinna byæ traktowana jako ALPHA nawet je¿eli dzia³a.
 rm -rf $RPM_BUILD_ROOT
 %{__make} install
 
+gzip -9nf AUTHORS README NEWS TODO THANKS
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS COPYING INSTALL README NEWS TODO THANKS doc
+%doc AUTHORS.gz README.gz NEWS.gz TODO.gz THANKS.gz doc
 %{_libdir}/libGTKJava.so.0.5.0
 %{_libdir}/libGTKJava.so
 %{_libdir}/libGNOMEJava.so.0.5.0
 %{_libdir}/libGNOMEJava.so
-%{_datadir}/java-gnome/
+%{_datadir}/java-gnome
