@@ -1,5 +1,5 @@
 Summary:	Java-Gnome is a preliminary version of Java wrappers for GTK/GNOME
-Summary(pl):	Java-Gnome jest wczesn± wersj± systemu javowych wrapperów dla GTK/GNOME
+Summary(pl.UTF-8):   Java-Gnome jest wczesnÄ… wersjÄ… systemu javowych wrapperÃ³w dla GTK/GNOME
 Name:		java-gnome
 Version:	0.5.0
 Release:	2
@@ -16,9 +16,9 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 This is a very preliminary version of Java wrappers for GTK/GNOME and
 should be deamed ALPHA although it might work for you.
 
-%description -l pl
-To jest bardzo wczesna wersja javowych wrapperów dla GTK/GNOME i
-powinna byæ traktowana jako ALPHA nawet je¿eli dzia³a.
+%description -l pl.UTF-8
+To jest bardzo wczesna wersja javowych wrapperÃ³w dla GTK/GNOME i
+powinna byÄ‡ traktowana jako ALPHA nawet jeÅ¼eli dziaÅ‚a.
 
 %prep
 %setup -q
