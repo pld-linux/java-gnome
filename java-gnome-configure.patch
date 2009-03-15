@@ -1,0 +1,159 @@
+diff -urN java-gnome-4.0.10/configure java-gnome-4.0.10.new/configure
+--- java-gnome-4.0.10/configure	2009-03-05 12:21:48.000000000 +0100
++++ java-gnome-4.0.10.new/configure	2009-03-15 00:23:50.000000000 +0100
+@@ -144,6 +144,8 @@
+ 			$str .= "pkgadd";
+ 		} elsif ($os eq "slackware") {
+ 			$str .= "installpkg";
++		} elsif ($os eq "pld") {
++			$str .= "poldek -i"
+ 		} else {
+ 			$str .= "[FIXME fetch and install command for this OS]"; 
+ 		}
+@@ -202,6 +204,8 @@
+ 			$str .= "pkgadd";
+ 		} elsif ($os eq "slackware") {
+ 			$str .= "installpkg";
++		} elsif ($os eq "pld") {
++			$str .= "poldek -i"
+ 		} else {
+ 			$str .= "[FIXME fetch and install command for this OS]"; 
+ 		}
+@@ -633,6 +637,9 @@
+ } elsif ( -f "/etc/slackware-version" ) {
+ 	output "Slackware";
+ 	$os = "slackware";
++} elsif ( -f "/etc/pld-release" ) {
++	output "PLD Linux";
++	$os = "pld";
+ }
+ 
+ if ($os) {
+@@ -729,7 +736,12 @@
+ 		"junit",
+ 		"/usr/share/java/junit.jar");
+ 
+-	
++} elsif ($os eq "pld") {
++
++	check_prereq(@junit_jars,
++		"JUnit test framework",
++		"junit",
++		"/usr/share/java/junit.jar");
+ 	
+ } else {
+ 	bail "failed!", "This OS not configured with defaults!\nTHIS IS AN INTERNAL ERROR, PLEASE FILE A BUG.";
+@@ -799,6 +811,16 @@
+ 			"libglade-2.0",
+ 			"Glade development libraries",
+ 			"libglade2.0_0-devel");
++
++} elsif ($os eq "pld") {
++	check_system_library(@gnomedev_libs,
++			"gtk+-2.0 >= 2.14.0 pango >= 1.22 atk gdk-2.0 gtk+-unix-print-2.0 cairo-svg >= 1.6.4",
++			"GTK+ development libraries",
++			"gtk+2-devel");
++	check_system_library(@gnomedev_libs,
++			"libglade-2.0 >= 2.6.3",
++			"Glade development libraries",
++			"libglade2-devel");
+ }
+ 
+ 
+@@ -1219,6 +1241,46 @@
+ 	check_jar($jar, "$vendor jar", $jar_candidate, "");
+ 	check_javadoc($javadoc, "$vendor javadoc", $javadoc_candidate, "");
+ 
++} elsif ($os eq "pld") {
++	# check ecj, the standalone Eclipse compiler.
++	check_compiler($ecj, "Eclipse ecj", which("ecj"), "-g -preserveAllLocals -nowarn -source 1.5 -target 1.5");
++
++	my $javac_candidate;
++	my $javah_candidate;
++	my $jar_candidate;
++	my $javadoc_candidate;
++	my $vendor;
++	if ($jdk_home) {
++		$javac_candidate = "$jdk_home/bin/javac";
++		$javah_candidate = "$jdk_home/bin/javah";
++		$jar_candidate = "$jdk_home/bin/jar";
++		$javadoc_candidate = "$jdk_home/bin/javadoc";
++		$vendor = "Specified";
++	} else {
++		$javac_candidate = "/usr/lib/jvm/java/bin/javac";
++		$javah_candidate = "/usr/lib/jvm/java/bin/javah";
++		$jar_candidate = "/usr/lib/jvm/java/bin/jar";
++		$javadoc_candidate = "/usr/lib/jvm/java/bin/javadoc";
++		$vendor = "Sun";
++	}
++	check_compiler($javac, "$vendor javac", $javac_candidate, "-g -source 1.5 -target 1.5");
++
++	# check for gcj
++	my $gcj_candidate;
++	if ($gcj_home) {
++		$gcj_candidate = "$gcj_home/bin/gcj";
++	} else {
++		$gcj_candidate = which("gcj");
++	}
++	check_compiler($gcjC, "GNU gcj -C (bytecode mode)", $gcj_candidate, "-C");
++
++	# check for kaffe's compiler
++	check_compiler($kaffec, "Kaffe javac", which("kaffec"), "");
++
++	check_jni_header_generator($javah, "$vendor javah", $javah_candidate, "-jni");
++	check_jar($jar, "$vendor jar", $jar_candidate, "");
++	check_javadoc($javadoc, "$vendor javadoc", $javadoc_candidate, "");
++
+ } else {
+ 	bail "failed!", "This OS not configured with a workable Java compiler checks!\nTHIS IS AN INTERNAL ERROR, PLEASE FILE A BUG.";
+ }
+@@ -1615,6 +1677,49 @@
+ 	}
+ 	check_runtime($cacao, "CACAO VM", $cacao_candidate, "");
+ 
++} elsif ($os eq "pld") {
++	# check for a proper JDK/JRE java Virtual Machine. 
++	my $java_candidate;
++	my $vendor;
++	if ($jdk_home) {
++		$java_candidate = "$jdk_home/bin/java";
++		$vendor = "Specified";
++	} else {
++		$java_candidate = "/usr/lib/jvm/java/bin/java";
++		$vendor = "Sun";
++	}
++	check_runtime($java, "$vendor java VM", $java_candidate, "-classpath .");
++
++	# check gij (the bytecode interpreter from the GCJ project)
++	my $gij_candidate;
++	if ($gcj_home) {
++		$gij_candidate = "$gcj_home/bin/gij";
++	} else {
++		$gij_candidate = which("gij");
++	}
++	check_runtime($gij, "GNU gij", $gij_candidate, "-classpath .");
++
++	# check kaffe. See the comment about Kaffe above in the Debian block.
++	check_runtime($kaffe, "Kaffe VM", which("kaffe"), "");
++
++	# check jamvm (an elegant bytecode interpreter used by many in the
++	# CLASSPATH project to test new releases)
++	my $jamvm_candidate;
++	if ($jamvm_bin) {
++		$jamvm_candidate = "$jamvm_bin";
++	} else {
++		$jamvm_candidate = "/usr/bin/jamvm";
++	}
++	check_runtime($jamvm, "JamVM VM", $jamvm_candidate, "");
++
++	my $cacao_candidate;
++	if ($cacao_bin) {
++		$cacao_candidate = "$cacao_bin";
++	} else {
++		$cacao_candidate = "/usr/bin/cacao";
++	}
++	check_runtime($cacao, "CACAO VM", $cacao_candidate, "");
++
+ } else {
+ 	bail "failed!", "This OS not configured with appropriate Java VM checks!\nTHIS IS AN INTERNAL ERROR, PLEASE FILE A BUG.";
+ }
