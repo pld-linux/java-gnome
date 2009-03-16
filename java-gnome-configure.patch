@@ -6,7 +6,7 @@ diff -urN java-gnome-4.0.10/configure java-gnome-4.0.10.new/configure
  		} elsif ($os eq "slackware") {
  			$str .= "installpkg";
 +		} elsif ($os eq "pld") {
-+			$str .= "poldek -i"
++			$str .= "poldek -u"
  		} else {
  			$str .= "[FIXME fetch and install command for this OS]"; 
  		}
@@ -15,7 +15,7 @@ diff -urN java-gnome-4.0.10/configure java-gnome-4.0.10.new/configure
  		} elsif ($os eq "slackware") {
  			$str .= "installpkg";
 +		} elsif ($os eq "pld") {
-+			$str .= "poldek -i"
++			$str .= "poldek -u"
  		} else {
  			$str .= "[FIXME fetch and install command for this OS]"; 
  		}
