@@ -4,7 +4,7 @@ Summary:	Java bindings for the GNOME desktop environment
 Summary(pl.UTF-8):	Wiązania Javy dla środowiska graficznego GNOME
 Name:		java-gnome
 Version:	4.0.14
-Release:	3
+Release:	4
 License:	GPL v2
 Group:		Libraries/Java
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/java-gnome/4.0/%{name}-%{version}.tar.bz2

@@ -1,5 +1,14 @@
---- java-gnome-4.0.14/build/faster.orig	2026-04-05 04:09:42.584481730 +0200
-+++ java-gnome-4.0.14/build/faster	2026-04-05 04:09:55.962803593 +0200
+--- java-gnome-4.0.14/build/faster.orig	2026-04-05 12:53:47.309630278 +0200
++++ java-gnome-4.0.14/build/faster	2026-04-05 12:53:55.678040619 +0200
+@@ -37,7 +37,7 @@
+ # bring to the process when it lands, so it is a step in the right direction.
+ #
+ 
+-import os, hashlib, subprocess, cPickle, sys
++import os, hashlib, subprocess, pickle, sys
+ from os.path import *
+ from shutil import move
+ 
 @@ -73,7 +73,7 @@
  		flock(lock, LOCK_EX | LOCK_NB)
  	except IOError:
@@ -41,8 +50,12 @@
  		sys.exit(9)
  
  	config['GNOME_CCFLAGS'] = os.popen("pkg-config --cflags " + GNOME_MODULES).read().rstrip()
-@@ -135,7 +135,7 @@
- 			hashes = cPickle.load(db)
+@@ -132,10 +132,10 @@
+ 	if isfile(hashFile):
+ 		try:
+ 			db = open(hashFile, "rb")
+-			hashes = cPickle.load(db)
++			hashes = pickle.load(db)
  			db.close()
  		except (EOFError, KeyError, IndexError):
 -			print "build checksum cache corrupt; full rebuild forced"
@@ -50,6 +63,15 @@
  			hashes = {}
  
  
+@@ -147,7 +147,7 @@
+ 
+ def checkpointHashes():
+ 	db = open(hashFile + ".tmp", "wb")
+-	cPickle.dump(hashes, db)
++	pickle.dump(hashes, db)
+ 	db.close()
+ 
+ 	move(hashFile + ".tmp", hashFile)
 @@ -217,7 +217,7 @@
  
  def debug(args):
@@ -71,6 +93,15 @@
  	sys.stdout.flush()
  	
  	status = subprocess.call(cmd, shell=True, cwd=inDir, bufsize=1)
+@@ -426,7 +426,7 @@
+ 	files = [] 
+ 	for file in list:
+ 		file = file.replace("tmp/bindings/", "")
+-		file = file.replace("$", "\$")
++		file = file.replace("$", "\\$")
+ 		files.append(file)
+ 
+ 	cmd = config['JAR'] + " cf "
 @@ -726,5 +726,5 @@
  	try:
  		main()
