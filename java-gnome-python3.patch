@@ -1,0 +1,80 @@
+--- java-gnome-4.0.14/build/faster.orig	2026-04-05 04:09:42.584481730 +0200
++++ java-gnome-4.0.14/build/faster	2026-04-05 04:09:55.962803593 +0200
+@@ -73,7 +73,7 @@
+ 		flock(lock, LOCK_EX | LOCK_NB)
+ 	except IOError:
+ 		if not silent:
+-			print "Inhibited: another build process already running"
++			print("Inhibited: another build process already running")
+ 			sys.stdout.flush()
+ 		sys.exit(0)
+ 
+@@ -97,16 +97,16 @@
+ def loadConfig():
+ 	global config
+ 	if ((not isfile(configFile)) or (getmtime(configFile) < getmtime(versionFile))):
+-		print
+-		print "You need to run ./configure to check prerequisites"
+-		print "and setup preferences before you can build java-gnome."
++		print()
++		print("You need to run ./configure to check prerequisites")
++		print("and setup preferences before you can build java-gnome.")
+ 
+ 		if not os.access("configure", os.X_OK):
+-			print "I'll make it executable for you."
+-			print
++			print("I'll make it executable for you.")
++			print()
+ 			executeCommand("CHMOD", "configure", "chmod +x configure")
+ 		else:
+-			print
++			print()
+ 
+ 		sys.exit(1)
+ 	try:
+@@ -120,7 +120,7 @@
+ 		cfg.close()
+ 
+ 	except (EOFError):
+-		print "Error while trying to read .config"
++		print("Error while trying to read .config")
+ 		sys.exit(9)
+ 
+ 	config['GNOME_CCFLAGS'] = os.popen("pkg-config --cflags " + GNOME_MODULES).read().rstrip()
+@@ -135,7 +135,7 @@
+ 			hashes = cPickle.load(db)
+ 			db.close()
+ 		except (EOFError, KeyError, IndexError):
+-			print "build checksum cache corrupt; full rebuild forced"
++			print("build checksum cache corrupt; full rebuild forced")
+ 			hashes = {}
+ 
+ 
+@@ -217,7 +217,7 @@
+ 
+ def debug(args):
+ 	if False:
+-		print args, 
++		print(args, end="")
+ 
+ 
+ def filesNeedBuilding(list, update=True):
+@@ -319,9 +319,9 @@
+ def executeCommand(short, what, cmd, inDir=None):
+ 	sys.stderr.flush()
+ 	if not silent:
+-		print short + "\t" + what
++		print(short + "\t" + what)
+ 		if verbose:
+-			print cmd
++			print(cmd)
+ 	sys.stdout.flush()
+ 	
+ 	status = subprocess.call(cmd, shell=True, cwd=inDir, bufsize=1)
+@@ -726,5 +726,5 @@
+ 	try:
+ 		main()
+ 	except KeyboardInterrupt:
+-		print
++		print()
+ 

@@ -4,12 +4,13 @@ Summary:	Java bindings for the GNOME desktop environment
 Summary(pl.UTF-8):	Wiązania Javy dla środowiska graficznego GNOME
 Name:		java-gnome
 Version:	4.0.14
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		Libraries/Java
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/java-gnome/4.0/%{name}-%{version}.tar.bz2
 # Source0-md5:	45a34b29b2d2686b8e5bd926bff9b09e
 Patch0:		%{name}-configure.patch
+Patch1:		%{name}-python3.patch
 URL:		http://java-gnome.sourceforge.net/
 BuildRequires:	enchant-devel
 BuildRequires:	gtk+2-devel >= 2:2.14.0
@@ -32,6 +33,7 @@ Wiązania Javy dla środowiska graficznego GNOME.
 %prep
 %setup -q
 %patch -P0 -p1
+%patch -P1 -p1
 
 %build
 ./configure \
